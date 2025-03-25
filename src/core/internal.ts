@@ -148,7 +148,7 @@ export function createInput<
     and: Object.assign((...inputs: InputSource[]) => createInput(`${s}${exactly(...inputs)}`), {
       referenceTo: (groupName: string) => createInput(`${s}\\k<${groupName}>`),
     }),
-    or: (...inputs) => createInput(`(?:${s}|${exactly(...inputs)})`),
+    or: (...inputs) => createInput(`(?:${s}|${inputs.slice(1).reduce((acc, input) => `${acc + (typeof input === 'string' ? `|` : '')}${exactly(input)}`, exactly(inputs[0]))})`),
     after: (...input) => createInput(`(?<=${exactly(...input)})${s}`),
     before: (...input) => createInput(`${s}(?=${exactly(...input)})`),
     notAfter: (...input) => createInput(`(?<!${exactly(...input)})${s}`),
